@@ -33,8 +33,23 @@ const add = async (req, res, next) => {
   }
 };
 
+const update = async (req, res, next) => {
+  const { id } = req.params;
+  const { name } = req.body;
+  try {
+    const result = await productService.update(name, id);
+    if (result.error) {
+      return res.status(result.error.status).json({ message: result.error.message });
+    }
+    res.status(200).json(result);
+  } catch (err) {
+    next(err);
+  }
+};
+
 module.exports = {
   getAll,
   getById,
   add,
+  update,
 };
