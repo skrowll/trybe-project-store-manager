@@ -30,8 +30,8 @@ const update = async (name, id) => {
       error: { status: 422, message: '"name" length must be at least 5 characters long' },
     };
   }
-  const result = await productModel.getById(id);
-  if (result.length === 0) return { error: { status: 404, message: 'Product not found' } };
+  const resultById = await productModel.getById(id);
+  if (resultById.length === 0) return { error: { status: 404, message: 'Product not found' } };
 
   await productModel.update(id, name);
   return {
@@ -40,9 +40,18 @@ const update = async (name, id) => {
   };
 };
 
+const remove = async (id) => {
+  const resultById = await productModel.getById(id);
+  if (resultById.length === 0) return { error: { status: 404, message: 'Product not found' } };
+
+  const result = await productModel.remove(id);
+  return result;
+};
+
 module.exports = {
   getAll,
   getById,
   add,
   update,
+  remove,
 };
