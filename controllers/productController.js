@@ -24,6 +24,9 @@ const add = async (req, res, next) => {
   const { name } = req.body;
   try {
     const result = await productService.add(name);
+    if (result.error) {
+      return res.status(result.error.status).json({ message: result.error.message });
+    }
     res.status(201).json(result);
   } catch (err) {
     next(err);

@@ -13,6 +13,12 @@ const getById = async (id) => {
 };
 
 const add = async (name) => {
+  if (!name) return { error: { status: 400, message: '"name" is required' } };
+  if (name.length < 5) {
+    return {
+      error: { status: 422, message: '"name" length must be at least 5 characters long' },
+    };
+  }
   const result = await productModel.add(name);
   return result;
 };
