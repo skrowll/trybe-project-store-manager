@@ -12,7 +12,13 @@ const getById = async (id) => {
   return result;
 };
 
+const add = async (name) => {
+  const result = await productModel.add(name);
+  return result;
+};
+
 module.exports = {
   getAll,
   getById,
+  add,
 };

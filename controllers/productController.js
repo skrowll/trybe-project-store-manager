@@ -2,8 +2,8 @@ const productService = require('../services/productService');
 
 const getAll = async (req, res, next) => {
   try {
-    const data = await productService.getAll();
-    res.status(200).json(data);
+    const result = await productService.getAll();
+    res.status(200).json(result);
   } catch (err) {
     next(err);
   }
@@ -12,9 +12,19 @@ const getAll = async (req, res, next) => {
 const getById = async (req, res, next) => {
   const { id } = req.params;
   try {
-    const [data] = await productService.getById(id);
-    if (!data) return res.status(404).json({ message: 'Product not found' });
-    res.status(200).json(data);
+    const [result] = await productService.getById(id);
+    if (!result) return res.status(404).json({ message: 'Product not found' });
+    res.status(200).json(result);
+  } catch (err) {
+    next(err);
+  }
+};
+
+const add = async (req, res, next) => {
+  const { name } = req.body;
+  try {
+    const result = await productService.add(name);
+    res.status(201).json(result);
   } catch (err) {
     next(err);
   }
@@ -23,4 +33,5 @@ const getById = async (req, res, next) => {
 module.exports = {
   getAll,
   getById,
+  add,
 };
