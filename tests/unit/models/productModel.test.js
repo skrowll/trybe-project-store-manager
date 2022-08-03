@@ -20,43 +20,79 @@ const products = [
 ];
 
 describe('Testa productModels', () => {
-  beforeEach(async () => {
-    await sinon.stub(connection, 'execute').resolves(products);
-  });
-
-  afterEach(async () => {
-    await connection.execute.restore()
-  })
 
   describe('getAll', () => {
-    it('É um objeto?', async () => {
-      const response = await productModel.getAll();
-      expect(response).to.be.a('object');
+
+    beforeEach(async () => {
+      await sinon.stub(connection, 'execute').resolves([products]);
     });
-    it('Possui a propriedade "name"?', async () => {
+
+    afterEach(async () => {
+      await connection.execute.restore()
+    })
+
+    it('É um array?', async () => {
       const response = await productModel.getAll();
-      expect(response).to.have.a.property('name');
+      expect(response).to.be.a('array');
+    });
+    it('É um array de objetos?', async () => {
+      const response = await productModel.getAll();
+      expect(response[1]).to.be.a('object');
+    });
+    it('O objeto possui a propriedade "name"?', async () => {
+      const response = await productModel.getAll();
+      expect(response[1]).to.have.a.property('name');
       
     });
-    it('Possui a propriedade "id"??', async () => {
+    it('O objeto possui a propriedade "id"??', async () => {
       const response = await productModel.getAll();
-      expect(response).to.have.a.property('id');
+      expect(response[1]).to.have.a.property('id');
     });
   });
 
   describe('getById', () => {
+
+    beforeEach(async () => {
+      await sinon.stub(connection, 'execute').resolves([products[0]]);
+    });
+
+    afterEach(async () => {
+      await connection.execute.restore()
+    })
+
     it('É um objeto?', async () => {
-      const response = await productModel.getById();
+      const response = await productModel.getById(1);
       expect(response).to.be.a('object');
     });
     it('Possui a propriedade "name"?', async () => {
-      const response = await productModel.getById();
+      const response = await productModel.getById(1);
       expect(response).to.have.a.property('name');
 
     });
     it('Possui a propriedade "id"??', async () => {
-      const response = await productModel.getById();
+      const response = await productModel.getById(1);
       expect(response).to.have.a.property('id');
+    });
+  });
+
+  describe('add', () => {
+
+    const mockPayloadProduct = {
+      "name": "ProdutoX"
+    }
+
+    beforeEach(async () => {
+      const execute = [{insertId: 1}]
+      await sinon.stub(connection, 'execute').resolves(execute);
+    });
+
+    afterEach(async () => {
+      await connection.execute.restore()
+    })
+
+    it('É um objeto?', async () => {
+      const response = await productModel.add(mockPayloadProduct);
+      expect(response).to.be.a('object');
     });
   });
 })
