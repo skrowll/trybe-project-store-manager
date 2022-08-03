@@ -12,6 +12,15 @@ const getById = async (id) => {
   return result;
 };
 
+const getByName = async (q) => {
+  if (!q) {
+    const list = await productModel.getAll();
+    return list;
+  }
+  const result = await productModel.getByName(q);
+  return result;
+};
+
 const add = async (name) => {
   if (!name) return { error: { status: 400, message: '"name" is required' } };
   if (name.length < 5) {
@@ -51,6 +60,7 @@ const remove = async (id) => {
 module.exports = {
   getAll,
   getById,
+  getByName,
   add,
   update,
   remove,

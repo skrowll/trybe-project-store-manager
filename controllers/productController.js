@@ -20,6 +20,16 @@ const getById = async (req, res) => {
   }
 };
 
+const getByName = async (req, res) => {
+  const { q } = req.query;
+  try {
+    const result = await productService.getByName(q);
+    res.status(200).json(result);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 const add = async (req, res) => {
   const { name } = req.body;
   try {
@@ -63,6 +73,7 @@ const remove = async (req, res) => {
 module.exports = {
   getAll,
   getById,
+  getByName,
   add,
   update,
   remove,
