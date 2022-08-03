@@ -74,6 +74,34 @@ describe('Testa productController', () => {
     });
   });
 
+  describe('getByName', () => {
+
+    const product1 = {
+      'id': 1,
+      'name': 'Martelo de Thor',
+    };
+
+    beforeEach(async () => {
+      req.query = 'Martelo';
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+      await sinon.stub(productService, 'getByName').resolves(product1);
+    });
+
+    afterEach(async () => {
+      await productService.getByName.restore();
+    });
+
+    it('Retorna status 200?', async () => {
+      await productController.getAll(req, res);
+      expect(res.status.calledWith(200)).to.be.equal(true);
+    });
+    it('Retorna um json?', async () => {
+      await productController.getAll(req, res);
+      expect(res.json.calledWith(sinon.match.array)).to.be.equal(true);
+    });
+  });
+
   describe('add', () => {
 
     const newProduct = {

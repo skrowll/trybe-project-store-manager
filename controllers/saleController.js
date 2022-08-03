@@ -20,6 +20,20 @@ const getById = async (req, res) => {
   }
 };
 
+const update = async (req, res) => {
+  const { id } = req.params;
+  const sales = req.body;
+  try {
+    const result = await saleService.update(sales, id);
+    if (result.error) {
+      return res.status(result.error.status).json({ message: result.error.message });
+    }
+    res.status(200).json(result);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 const remove = async (req, res) => {
   const { id } = req.params;
   try {
@@ -36,5 +50,6 @@ const remove = async (req, res) => {
 module.exports = {
   getAll,
   getById,
+  update,
   remove,
 };

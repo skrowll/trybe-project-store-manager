@@ -43,6 +43,20 @@ describe('Testa productModels', () => {
     expect(response).to.have.a.property('id');
   });
 
+  it('getById', async () => {
+    const response = await productModel.getById(1);
+    expect(response).to.be.a('object');
+    expect(response).to.have.a.property('name');
+    expect(response).to.have.a.property('id');
+  });
+
+  it('getByName', async () => {
+    const response = await productModel.getById('Martelo');
+    expect(response).to.be.a('object');
+    expect(response).to.have.a.property('name');
+    expect(response).to.have.a.property('id');
+  });
+
   it('add', async () => {
     const response = await productModel.add('ProdutoX');
     expect(response).to.be.a('object');

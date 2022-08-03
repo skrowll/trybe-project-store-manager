@@ -80,6 +80,24 @@ describe('Testa productService', () => {
     });
   });
 
+  describe('getByName', () => {
+
+    const name = 'Martelo';
+
+    beforeEach(async () => {
+      await sinon.stub(productModel, 'getByName').resolves(products);
+    });
+
+    afterEach(async () => {
+      await productModel.getByName.restore()
+    })
+
+    it('O nome é encontrado?', async () => {
+      const response = await productService.getByName(name);
+      expect(response.find((e) => e).name).to.includes(name);
+    });
+  });
+
   describe('add', () => {
 
     const newProduct = {
