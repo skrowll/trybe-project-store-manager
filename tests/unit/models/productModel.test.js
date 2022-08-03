@@ -21,78 +21,41 @@ const products = [
 
 describe('Testa productModels', () => {
 
-  describe('getAll', () => {
-
-    beforeEach(async () => {
-      await sinon.stub(connection, 'execute').resolves([products]);
-    });
-
-    afterEach(async () => {
-      await connection.execute.restore()
-    })
-
-    it('É um array?', async () => {
-      const response = await productModel.getAll();
-      expect(response).to.be.a('array');
-    });
-    it('É um array de objetos?', async () => {
-      const response = await productModel.getAll();
-      expect(response[1]).to.be.a('object');
-    });
-    it('O objeto possui a propriedade "name"?', async () => {
-      const response = await productModel.getAll();
-      expect(response[1]).to.have.a.property('name');
-      
-    });
-    it('O objeto possui a propriedade "id"??', async () => {
-      const response = await productModel.getAll();
-      expect(response[1]).to.have.a.property('id');
-    });
+  beforeEach(async () => {
+    await sinon.stub(connection, 'execute').resolves(products);
   });
 
-  describe('getById', () => {
+  afterEach(async () => {
+    await connection.execute.restore()
+  })
 
-    beforeEach(async () => {
-      await sinon.stub(connection, 'execute').resolves([products[0]]);
-    });
-
-    afterEach(async () => {
-      await connection.execute.restore()
-    })
-
-    it('É um objeto?', async () => {
-      const response = await productModel.getById(1);
-      expect(response).to.be.a('object');
-    });
-    it('Possui a propriedade "name"?', async () => {
-      const response = await productModel.getById(1);
-      expect(response).to.have.a.property('name');
-
-    });
-    it('Possui a propriedade "id"??', async () => {
-      const response = await productModel.getById(1);
-      expect(response).to.have.a.property('id');
-    });
+  it('getAll', async () => {
+    const response = await productModel.getAll();
+    expect(response).to.be.a('object');
+    expect(response).to.have.a.property('name');
+    expect(response).to.have.a.property('id');
   });
 
-  describe('add', () => {
+  it('getById', async () => {
+    const response = await productModel.getById(1);
+    expect(response).to.be.a('object');
+    expect(response).to.have.a.property('name');
+    expect(response).to.have.a.property('id');
+  });
 
-    const mockPayloadProduct = {
-      "name": "ProdutoX"
-    }
+  it('add', async () => {
+    const response = await productModel.add('ProdutoX');
+    expect(response).to.be.a('object');
+    expect(response).to.have.a.property('name').to.be.equal('ProdutoX');
+  });
 
-    beforeEach(async () => {
-      const execute = [{insertId: 1}]
-      await sinon.stub(connection, 'execute').resolves(execute);
-    });
+  it('update', async () => {
+    const response = await productModel.update(1, 'ProdutoX');
+    expect(response).to.be.a('object');
+  });
 
-    afterEach(async () => {
-      await connection.execute.restore()
-    })
-
-    it('É um objeto?', async () => {
-      const response = await productModel.add(mockPayloadProduct);
-      expect(response).to.be.a('object');
-    });
+  it('remove', async () => {
+    const response = await productModel.remove(1);
+    expect(response).to.be.a('object');
   });
 })
