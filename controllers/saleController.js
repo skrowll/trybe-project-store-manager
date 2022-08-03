@@ -20,21 +20,34 @@ const getById = async (req, res) => {
   }
 };
 
-const add = async (req, res) => {
-  const { sale } = req.body;
+const remove = async (req, res) => {
+  const { id } = req.params;
   try {
-    const result = await saleService.add(sale);
-    // if (result.error) {
-    //   return res.status(result.error.status).json({ message: result.error.message });
-    // }
-    res.status(201).json(result);
+    const result = await saleService.remove(id);
+    if (result.error) {
+      return res.status(result.error.status).json({ message: result.error.message });
+    }
+    res.status(204).end();
   } catch (err) {
     console.log(err);
   }
 };
 
+// const add = async (req, res) => {
+//   const { sale } = req.body;
+//   try {
+//     const result = await saleService.add(sale);
+//     // if (result.error) {
+//     //   return res.status(result.error.status).json({ message: result.error.message });
+//     // }
+//     res.status(201).json(result);
+//   } catch (err) {
+//     console.log(err);
+//   }
+// };
+
 module.exports = {
   getAll,
   getById,
-  add,
+  remove,
 };

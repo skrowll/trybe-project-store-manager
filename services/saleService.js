@@ -12,28 +12,36 @@ const getById = async (id) => {
   return result;
 };
 
-const add = async (sale) => {
-  // if (!name) return { error: { status: 400, message: '"name" is required' } };
-  // if (name.length < 5) {
-  //   return {
-  //     error: { status: 422, message: '"name" length must be at least 5 characters long' },
-  //   };
-  // }
-  if (sale.some((element) => !element.productId)) {
-    return { error: { status: 400, message: '"productId" is required' } };
-  }
-  if (sale.some((element) => !element.quantity)) {
-    return { error: { status: 400, message: '"quantity" is required' } };
-  }
-  if (sale.some((element) => element.quantity <= 0)) {
-    return { error: { status: 422, message: '"quantity" must be greater than or equal to 1' } };
-  }
-  const result = await saleModel.add(sale);
+const remove = async (id) => {
+  const resultById = await saleModel.getById(id);
+  if (resultById.length === 0) return { error: { status: 404, message: 'Sale not found' } };
+
+  const result = await saleModel.remove(id);
   return result;
 };
+
+// const add = async (sale) => {
+//   // if (!name) return { error: { status: 400, message: '"name" is required' } };
+//   // if (name.length < 5) {
+//   //   return {
+//   //     error: { status: 422, message: '"name" length must be at least 5 characters long' },
+//   //   };
+//   // }
+//   if (sale.some((element) => !element.productId)) {
+//     return { error: { status: 400, message: '"productId" is required' } };
+//   }
+//   if (sale.some((element) => !element.quantity)) {
+//     return { error: { status: 400, message: '"quantity" is required' } };
+//   }
+//   if (sale.some((element) => element.quantity <= 0)) {
+//     return { error: { status: 422, message: '"quantity" must be greater than or equal to 1' } };
+//   }
+//   const result = await saleModel.add(sale);
+//   return result;
+// };
 
 module.exports = {
   getAll,
   getById,
-  add,
+  remove,
 };
