@@ -19,109 +19,81 @@ const products = [
   },
 ];
 
+const res = {};
+const req = {};
+
 describe('Testa productController', () => {
 
   describe('getAll', () => {
 
     beforeEach(async () => {
-      await sinon.stub(productController, 'getAll').resolves(products);
+      sinon.stub(productService, 'getAll').resolves(products);
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
     });
 
     afterEach(async () => {
-      await productController.getAll.restore()
-    })
+      productService.getAll.restore();
+    });
 
-    it('É um array?', async () => {
-      const response = await productController.getAll();
-      expect(response).to.be.a('array');
+    it('Retorna status 200?', async () => {
+      await productController.getAll(req, res);
+      expect(res.status.calledWith(200)).to.be.equal(true);
     });
-    it('É um array de objetos?', async () => {
-      const response = await productController.getAll();
-      expect(response[1]).to.be.a('object');
-    });
-    it('O objeto possui a propriedade "name"?', async () => {
-      const response = await productController.getAll();
-      expect(response[1]).to.have.a.property('name');
-
-    });
-    it('O objeto possui a propriedade "id"??', async () => {
-      const response = await productController.getAll();
-      expect(response[1]).to.have.a.property('id');
+    it('Retorna um json?', async () => {
+      await productController.getAll(req, res);
+      expect(res.json.calledWith(sinon.match.array)).to.be.equal(true);
     });
   });
 
   describe('getById', () => {
 
     const product1 = {
-      "id": 1,
-      "name": "Martelo de Thor",
+      'id': 1,
+      'name': 'Martelo de Thor',
     };
 
     beforeEach(async () => {
-      await sinon.stub(productController, 'getById').resolves(product1);
+      req.params = '1';
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+      await sinon.stub(productService, 'getById').resolves(product1);
     });
 
     afterEach(async () => {
-      await productController.getById.restore()
-    })
-
-    it('É um objeto?', async () => {
-      const response = await productController.getById(1);
-      expect(response).to.be.a('object');
+      await productService.getById.restore();
     });
-    it('Possui a propriedade "name"?', async () => {
-      const response = await productController.getById(1);
-      expect(response).to.have.a.property('name');
 
+    it('Retorna status 200?', async () => {
+      await productController.getAll(req, res);
+      expect(res.status.calledWith(200)).to.be.equal(true);
     });
-    it('Possui a propriedade "id"??', async () => {
-      const response = await productController.getById(1);
-      expect(response).to.have.a.property('id');
+    it('Retorna um json?', async () => {
+      await productController.getAll(req, res);
+      expect(res.json.calledWith(sinon.match.array)).to.be.equal(true);
     });
   });
 
   describe('add', () => {
 
     const newProduct = {
-      name: 'ProdutoX'
+      'name': 'ProdutoX'
     };
 
     beforeEach(async () => {
-      const execute = [{ insertId: 1 }]
-      await sinon.stub(productController, 'add').resolves(newProduct);
+      req.body = { 'name': 'ProdutoX' };
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+      await sinon.stub(productService, 'add').resolves(newProduct);
     });
 
     afterEach(async () => {
-      await productController.add.restore()
+      await productService.add.restore()
     })
 
-    it('É um objeto?', async () => {
-      const response = await productController.add('ProdutoX');
-      expect(response).to.be.a('object');
-    });
-    it('Possui a propriedade name igual à que foi passada?', async () => {
-      const response = await productController.add('ProdutoX');
-      expect(response).to.have.a.property('name').to.be.equal('ProdutoX');
-    });
-  });
-
-  describe('update', () => {
-
-    const attProduct = {
-      name: 'Martelo do Batman'
-    };
-
-    beforeEach(async () => {
-      await sinon.stub(productController, 'update').resolves(attProduct);
-    });
-
-    afterEach(async () => {
-      await productController.update.restore()
-    })
-
-    it('É um objeto?', async () => {
-      const response = await productController.update(1, 'Martelo do Batman');
-      expect(response).to.be.a('object');
+    it('Retorna status 201?', async () => {
+      await productController.add(req, res);
+      expect(res.status.calledWith(201)).to.be.equal(true);
     });
   });
 })

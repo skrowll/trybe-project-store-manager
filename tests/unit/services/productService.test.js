@@ -53,8 +53,8 @@ describe('Testa productService', () => {
   describe('getById', () => {
 
     const product1 = {
-        "id": 1,
-        "name": "Martelo de Thor",
+        'id': 1,
+        'name': 'Martelo de Thor',
       };
 
     beforeEach(async () => {
@@ -83,7 +83,7 @@ describe('Testa productService', () => {
   describe('add', () => {
 
     const newProduct = {
-      name: 'ProdutoX'
+      'name': 'ProdutoX'
     };
 
     beforeEach(async () => {
@@ -108,7 +108,7 @@ describe('Testa productService', () => {
   describe('update', () => {
 
     const attProduct = {
-      name: 'Martelo do Batman'
+      'name': 'Martelo do Batman'
     };
 
     beforeEach(async () => {
