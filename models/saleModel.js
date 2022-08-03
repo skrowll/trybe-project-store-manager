@@ -33,19 +33,6 @@ const remove = async (id) => {
   return query;
 };
 
-// const add = async (name) => {
-//   const [query] = await connection.execute(
-//     'INSERT INTO StoreManager.sales (name) VALUES (?)',
-//     [name],
-//   );
-
-//   const result = {
-//     id: query.insertId,
-//     name,
-//   };
-//   return result;
-// };
-
 module.exports = {
   getAll,
   getById,
